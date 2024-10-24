@@ -3,7 +3,7 @@
 import torch
 from datasets import Dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments
-from trl import DPOTrainer
+from trl import DPOTrainer, DPOConfig
 import json
 import wandb
 import os
@@ -26,29 +26,29 @@ class DPOTrainerWrapper:
         os.makedirs(self.log_dir, exist_ok=True)
         
         self.training_args = TrainingArguments(
-            output_dir="./results",
+            output_dir="./results/dpo",
             num_train_epochs=EPOCHS,
             per_device_train_batch_size=BATCH_SIZE,
             learning_rate=LEARNING_RATE,
             weight_decay=0.01,
-            evaluation_strategy="epoch",
+            eval_strategy="epoch",
             eval_steps=1,
             save_strategy="epoch",
             save_steps=1,
             logging_dir="./log/dpo",
             logging_steps=100,
             report_to="wandb",
+            # Ensure no unsupported attributes are set
         )
         
+        # Initialize DPOTrainer
         self.dpo_trainer = DPOTrainer(
             model=self.model,
             args=self.training_args,
             train_dataset=self.data,
             eval_dataset=self.data,  # Using the same dataset for evaluation
             tokenizer=self.tokenizer,
-            max_length=MAX_LENGTH,
-            max_prompt_length=64,
-            beta=0.1,
+            # Ensure only supported arguments are passed
         )
 
     def load_and_prepare_data(self, data_path):

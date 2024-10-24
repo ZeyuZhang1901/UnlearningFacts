@@ -159,7 +159,7 @@ def demonstrate_qa(model, data, num_samples=5):
     with open("./demo/sft/qa_demo.txt", "w") as f:
         f.writelines(demo_output)
     
-    print(f"Demo output has been saved to ./demo/sft/qa_demo.txt")
+    print("Demo output has been saved to ./demo/sft/qa_demo.txt")
 
 # Main training loop
 def train_and_evaluate(data, num_epochs=10, eval_steps=10, save_steps=50, accuracy_threshold=0.95):
